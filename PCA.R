@@ -1,0 +1,94 @@
+library(tidyverse)
+library(readxl)
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+library(hrbrthemes)
+library(viridis)
+library(readxl)
+library(reshape)
+library(gghighlight)
+library(ggpubr)
+library(rstatix)
+library(GGally)
+library(vegan)
+library(factoextra)
+library(ggfortify)
+library(ggrepel)
+library(stringr)
+library(tidyr)
+
+
+result   <- read.delim("C:/Users/rratnappan/Documents/F1M/CellLines/var/Merge_DF_all_plates_2p5_average_values.txt")
+result
+#Splitting a column, create a new column and name the two new column
+Split_result <-str_split(result$Pos_CellLine, ";")
+split_df <- do.call(rbind, Split_result)
+colnames(split_df) <- c("Pos", "CellLine")
+split_df
+CellLine_Name =  split_df[, c("CellLine")]
+CellLine_Name
+result <- cbind(result, split_df)
+result_CellLine_Name =
+#Delete the columns
+result$Pos_CellLine <- NULL
+result$CellLine <- NULL
+result <- result[, c("Pos","reads_total_mean","reads_total_std","af_mean","af_std") ]
+print(result)
+write.csv(result, "C:/Users/rratnappan/Documents/F1M/CellLines/var/result.csv")
+numeric_result <- result[, sapply(result, is.numeric)]
+#Check if all values are numeric
+str(numeric_result)
+
+#Is data good, are there any zeros
+cor(numeric_result)
+mean(cor(numeric_result))
+
+pca <- rda(decostand(numeric_result, method = "hellinger"), scale = TRUE, center = TRUE)
+pca
+
+summary(pca)
+scores(pca)
+
+#Eigenvalues
+pca.data.PCs <-as.data.frame(pca$CA$eig)
+pca.data.PC1and2 <- as.data.frame((pca$CA$eig[1:2]))
+
+screeplot(pca, bstick = TRUE, type = "l", main = NULL)
+
+biplot(pca, scaling ="symmetric")
+
+pca.prcomp <- prcomp((numeric_result), scale = TRUE, center =TRUE)
+pca.prcomp.h = decostand(numeric_result, "hellinger")
+pca.prcomp = prcomp(pca.prcomp.h, scale. = TRUE, center = TRUE)
+summary(pca.prcomp)
+
+#Eigenvalues
+eig.val = get_eigenvalue(pca.prcomp)
+eig.val
+#Results for Varaible
+var <- get_pca_var(pca.prcomp)
+var
+
+str(pca.prcomp)
+pca.prcomp$x
+
+#Bind to the Cell line names to the original file
+CellLine.PCAs = cbind(result, pca.prcomp$x[,1:2])
+#ScreePlot
+screeplot(pca.prcomp, bstick = TRUE, type = "l", main = NULL)
+
+#ScreePlot histogram 
+fviz_eig(pca.prcomp)
+biplot(pca.prcomp, scaling ="symmetric")
+fviz_pca_biplot(pca.prcomp, repel =TRUE, col.var ="#2E9FDF", col.ind = "#696969")
+
+
+#ggplot
+pca.prcomp.data = data.frame(pca.prcomp$x)
+pca.prcomp.data$plotx = pca.prcomp.data[,1]
+pca.prcomp.data$ploty = pca.prcomp.data[,2]
+
+
+
