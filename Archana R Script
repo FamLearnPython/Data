@@ -1,0 +1,33 @@
+VI_V2
+Compare <- read_excel("/Users/ar1666/Documents/Data/V1_V2/MC_Cohorts_V1_V2_Com parisonDataCompiled_SP_06MAR2025_AR.xlsx" )
+ggplot (Compare, aes (Detection_Plot2, V2_VAF_ppm_plot)) + geom_hline(yintercept =50, linetype="longdash", color="red", alpha=0.6) + geom_hline(yintercept=0.5, linetype=" longdash", color="darkblue", alpha=0.6) + geom_hline(yintercept=0.0 1, linetype="longdash", color="darkgrey") + geom_boxplot (data=Compare &> dply
+r:: filter(V2_VAF_ppm_plot != "0.01" ) , outliers=FALSE) + geom_quasirandom (si
+ze = 4, aes (shape=Cancer_Type, color = Detection_Plot2)) + scale_y_log10(limit
+S=c(0.01, 100000), breaks=c(0.01, •1, 0.5, 1, 10, 50, 100, 1000, 10000, 10000
+0), labels=c("ND", "0.1ppm", "0.5ppm", "1ppm", "10ppm", "50ppm", "100ppm", "1,
+000ppm", "10,000ppm", "100,000ppm")) + theme(panel.grid.minor=element_blank(),
+text = element_text (size = 20), axis. text.=element_blank(), axis. ticks.x=elem
+ent_blank(), strip. text. x = element_text (size = 20)) + ylab("V2 VAF (ppm)") +
+xlab("') + ggtitle ("Multicancer Cohort - V1/V2 Comparison") + facet_grid (cols
+=vars (V1_V2), scale="free_x", labeller = labeller(V1_Detection = label_wrap_ge
+n (width = 20))) + geom_text (aes (y =50, x= 0.6), label="LoD_V1", color ="red" )+
+geom_text (aes (y =0.5, x= 0.6), label="LoD_V2", color ="darkblue") +scale_shape
+_manual (values = c (10,11,12,13,14,15))+scale_color_manual (values = c("red", "bl
+ue" ) )
+
+
+
+Compare <- read_excel("/Users/ar1666/Documents/Data/V1_V2/MC_Cohorts_V1_V2_Com parisonDataCompiled_SP_06MAR2025_AR.xlsx")
+ggp lot (Compare, aes(Detection_Plot2, V2_VAF_ppm_plot)) + geom_hline(yintercept
+=50, linetype="longdash", color="red", alpha=0.6) + geom_hline(yintercept=0.5, linetype="longdash", color="darkblue", alpha=0.6) + geom_hline(yintercept=0.0 1, linetype="longdash", color="darkgrey") + geom_boxplot (data=Compare 8>% dply
+r:: filter(V2_VAF_ppm_plot != "0.01" ) , outliers=FALSE) + geom_quasirandom(str
+oke = 1.5, aes (shape=Cancer_Type, color = Detection_Plot2)) + scale_y_log10(li
+mits=c (0.01, 100000), breaks=c(0.01, .1, 0.5, 1, 10, 50, 100, 1000, 10000, 100
+000), labels=c ("ND", "0.1ppm", "0.5ppm", "1ppm", "10ppm", "50ppm", "100ppm",
+"1,000pm", "10,000pm", "100,000pm")) + theme (panel. grid minor=element_blank
+(), text = element_text (size = 20), axis. text.x=element_blank(), axis.ticks.x=
+element_blank(), strip. text.x = element_text (size = 20)) + ylab("V2 VAF (pp
+m)") + xlab('') + ggtitle ("Multicancer Cohort - V1/V2 Comparison") + facet _gr
+id (cols=vars(V1_V2), scale="free_x", labeller = labeller(V1_Detection = label_
+wrap_gen (width = 20))) + scale_shape_manual (values=c(21,24,22,21,24,22))+ scal
+e_shape_manual (values=seq (0,15)) + geom_text (aes (y =50, x= 0.6), label="LoD_V 1", color ="red")+ geom_text (aes (y =0.5, x= 0.6), label="LoD_V2", color ="dark blue")
